@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="120"
+   viewBox="0 0 120 120"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1">
+    <rect
+       style="fill:#181818;fill-opacity:1;stroke-width:0.883435"
+       id="rect1"
+       width="120"
+       height="120.55144"
+       x="0"
+       y="0"
+       ry="60" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#73c936;stroke-opacity:1"
+       id="path9"
+       d="m 59.96909,62.450569 c -2.612766,0.850187 -2.435082,-3.102504 -1.413067,-4.342589 2.769598,-3.360552 7.932468,-1.49959 10.098244,1.516457 3.874065,5.395 0.896511,12.768719 -4.445979,15.853898 C 56.36797,80.005959 46.525633,75.787311 42.598735,68.102834 37.364797,57.860635 42.868666,45.477084 52.903758,40.737626 65.531897,34.773501 80.486887,41.581594 86.024622,53.972171 92.731561,68.978821 84.609513,86.520801 69.860554,92.84869 52.479416,100.30589 32.341346,90.86427 25.22838,73.755099 17.016179,54.001885 27.780891,31.261926 47.251493,23.367271 69.375228,14.396862 94.721007,26.487023 103.39498,48.319906 113.12586,72.813102 99.708598,100.76749 75.512819,110.21904 48.650918,120.71206 18.085861,105.9665 7.8580252,79.407365"
+       transform="translate(2.0678996,-3.0583878)" />
+    <text
+       xml:space="preserve"
+       style="font-size:51.165px;writing-mode:lr-tb;direction:ltr;fill:#ffdd33;fill-opacity:1;stroke:#ffdd33;stroke-width:0.91366;stroke-opacity:1"
+       x="9.4810677"
+       y="59.392181"
+       id="text10"><tspan
+         id="tspan10"
+         x="9.4810677"
+         y="59.392181"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'JetBrainsMono Nerd Font Mono';-inkscape-font-specification:'JetBrainsMono Nerd Font Mono';stroke-width:0.91366">G<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.9278px;font-family:'JetBrainsMono Nerd Font Mono';-inkscape-font-specification:'JetBrainsMono Nerd Font Mono';fill:#e4e4ef;fill-opacity:1;stroke:#e4e4ef;stroke-width:0.91366;stroke-opacity:1"
+   id="tspan11">ruber</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.6974px;font-family:'JetBrainsMono Nerd Font Mono';-inkscape-font-specification:'JetBrainsMono Nerd Font Mono';writing-mode:lr-tb;direction:ltr;fill:#e4e4ef;fill-opacity:1;stroke:#e4e4ef;stroke-width:0.820725;stroke-opacity:1"
+       x="23.842838"
+       y="95.421165"
+       id="text15"><tspan
+         id="tspan15"
+         x="23.842838"
+         y="95.421165"
+         style="stroke-width:0.820725"><tspan
+   style="font-size:45.9606px;fill:#ffdd33;fill-opacity:1;stroke:#ffdd33;stroke-width:0.820725;stroke-opacity:1"
+   id="tspan17">D</tspan>arker</tspan></text>
+  </g>
+</svg>

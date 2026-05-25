@@ -1,0 +1,12 @@
+build/
+.cache/
+.clangd
+docs/
+logs/
+compile_commands.json
+src/generated/
+/server
+/server_*
+*.d
+*.o
+*.map

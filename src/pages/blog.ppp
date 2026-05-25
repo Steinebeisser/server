@@ -1,0 +1,10 @@
+---
+|route: /blog
+|pagetitle: Stein Blog
+---
+
+<div class="centered_page"
+    style="display: flex; align-items: center; text-align: center; flex: 1; justify-content: center;">
+    <h1 style="color: yellow;">BLOB</h1>
+</div>
+

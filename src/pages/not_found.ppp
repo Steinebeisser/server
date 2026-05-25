@@ -1,0 +1,9 @@
+---
+|route: /404
+|pagetitle: Stein
+---
+
+<div class="centered_page"
+    style="display: flex; align-items: center; text-align: center; flex: 1; justify-content: center;">
+    <h1 style="color: red;">404 NOT FOUND</h1>
+</div>

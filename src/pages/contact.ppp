@@ -1,0 +1,11 @@
+---
+|route: /contact
+|pagetitle: Stein Contact
+---
+
+<div class="centered_page"
+    style="display: flex; align-items: center; text-align: center; flex: 1; justify-content: center;">
+    <h1 style="color: yellow;">Kannst du nicht D:</h1>
+</div>
+
+

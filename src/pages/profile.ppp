@@ -1,0 +1,75 @@
+---
+|route: /profile
+|pagetitle: SteinPROOOOOOOOFIlE
+---
+<div class="profile" style="display: flex; width: 100%; height: 100%;">
+    <div class="profile_left_side">
+        <div class="avatar" style="height:unset; width: 80%; margin-top: 20px; aspect-ratio: 1/1;">
+        </div>
+        <h2>Steinebeisser</h2>
+        <p>Top Lane Hater</p>
+
+        <div class="implant">
+            <div class="dino-icon managarmr"></div>
+            <div class="dino-icon rhino"></div>
+        </div>
+    </div>
+    <div class="profile_right_side" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="profile_top" style="flex: 1;">
+        </div>
+
+        <div class="profile_bottom">
+            <div class="container">
+                <div class="preview setup_preview">
+                    <div class="header">Setup</div>
+                    <img src="[$ASSET:arch.svg$]" />
+                </div>
+                <div class="popup setup_popup">
+                    <div class="setup_grid">
+                        <div class="setup_card">
+                            <img class="setup_icon" src="[$ASSET:arch.svg$]">
+                            <span class="setup_name">Arch</span>
+                        </div>
+                        <div class="setup_card">
+                            <img class="setup_icon" src="[$ASSET:hyprland.svg$]">
+                            <span class="setup_name">Hyprland</span>
+                        </div>
+                        <div class="setup_card">
+                            <img class="setup_icon" src="[$ASSET:nvim.svg$]">
+                            <span class="setup_name">Neovim</span>
+                        </div>
+                        <div class="setup_card">
+                            <img class="setup_icon" src="[$ASSET:kitty.svg$]">
+                            <span class="setup_name">Kitty</span>
+                        </div>
+                        <div class="setup_card">
+                            <img class="setup_icon" src="[$ASSET:zsh.svg$]">
+                            <span class="setup_name">Zsh</span>
+                        </div>
+                        <div class="setup_card">
+                            <img class="setup_icon" src="[$ASSET:gruber-darker.svg$]">
+                            <span class="setup_name">Gruber-Darker</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="preview langauge_preview">
+                    <div class="header">Sprachen</div>
+                    <img src="[$ASSET:c.svg$]" />
+                </div>
+                <div class="popup language_popup">
+                    <div class="main_lang">
+                        <img class="lang_icon" src="[$ASSET:c.svg$]" />
+                    </div>
+                    <div class="second_lang">
+                        <img class="lang_icon" src="[$ASSET:c_hashtag.svg$]" />
+                    </div>
+                    <div class="third_lang">
+                        <img class="lang_icon" src="[$ASSET:c_pipi.svg$]" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

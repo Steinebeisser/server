@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>[$PAGETITLE$]</title>
+    <link rel="stylesheet" href="/assets/styles.[$CSS_HASH$].css">
+    <meta charset="utf8">
+
+    <link rel="icon" href="[$ASSET:favicon.ico$]" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="[$ASSET:favicon.svg$]">
+    <link rel="icon" type="image/png" sizes="32x32" href="[$ASSET:favicon-32x32.png$]">
+    <link rel="icon" type="image/png" sizes="96x96" href="[$ASSET:favicon-96x96.png$]">
+    <link rel="apple-touch-icon" sizes="180x180" href="[$ASSET:apple-touch-icon.png$]">
+</head>
+
+<body>
+    <div class="client">
+
+        <div class="top_bar">
+            <div class="logo">Temp</div>
+
+            <nav>
+                <a class="[$ACTIVE:/$]" href="/" data-fragment="[$FRAGMENT_ROUTE:/$]">Home</a>
+                <a class="[$ACTIVE:/blog/$]" href="/blog/" data-fragment="[$FRAGMENT_ROUTE:/BLOG/$]">Blog</a>
+                <a class="[$ACTIVE:/projects/$]" href="/projects/"
+                    data-fragment="[$FRAGMENT_ROUTE:/PROJECTS/$]">Projects</a>
+                <a class="[$ACTIVE:/contact/$]" href="/contact/"
+                    data-fragment="[$FRAGMENT_ROUTE:/CONTACT/$]">Contact</a>
+                <a class="[$ACTIVE:/credits/$]" href="/credits/"
+                    data-fragment="[$FRAGMENT_ROUTE:/CREDITS/$]">Credits</a>
+            </nav>
+
+            <script>
+                document.addEventListener('click', (e) => {
+                    let target = e.target.closest('a');
+                    if (!target) return;
+                    e.preventDefault();
+
+                    let fragment_path = target.origin + target.dataset.fragment
+                    fetch(fragment_path)
+                        .then(response => response.text())
+                        .then(data => {
+                            const nav = document.querySelector("nav");
+                            console.log(target);
+                            let ass = document.querySelectorAll("nav a");
+                            for (let i = 0; i < ass.length; ++i) {
+                                ass[i].attributes.class.value = "";
+                            }
+
+                            if (nav.contains(target)) {
+                                target.attributes.class.value = "active";
+                            }
+
+                            let contentContainer = document.getElementById("content");
+                            contentContainer.innerHTML = data;
+                            history.pushState({}, "", target.href);
+                        })
+                });
+            </script>
+
+            <div class="top_right">
+                <div class="name_info">
+                    <div class="username">Steinebeisser</div>
+                    <div class="status">● Cur</div>
+                </div>
+                <a class="avatar-button" href="/profile/" data-fragment="[$FRAGMENT_ROUTE:/profile/$]">
+                    <div class="avatar"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="big_container">
+            <div class="left_content" id="content">
+                [$PAGE_CONTENT$]
+            </div>
+
+            <div class="stats_panel">
+                <div class="stats_header">
+                    <span class="connection_status">Connected</span>
+                </div>
+
+                <div class="stats_body">
+                    <div class="uptime">
+                        <span>Uptime</span>
+                        <strong>23d 14h</strong>
+                    </div>
+
+                    <div class="stat_section">
+                        <div class="section_title">Host</div>
+                        <div class="stat_row"><span>Provider</span><b>Infomaniak</b></div>
+                        <div class="stat_row"><span>Region</span><b>Plan-les-Ouates</b></div>
+                        <div class="stat_row"><span>Arch</span><b>x86_64</b></div>
+                        <div class="stat_row"><span>OS</span><b>Debian 13</b></div>
+                        <div class="stat_row"><span>Tier</span><b>VPS Lite</b></div>
+                    </div>
+
+                    <div class="stat_section">
+                        <div class="section_title">Hardware</div>
+                        <div class="stat_row"><span>CPU</span><b>AMD EPYC-Genoa</b></div>
+                        <div class="stat_row"><span>Cores</span><b>1 vCPU</b></div>
+                        <div class="stat_row"><span>RAM</span><b>1.2 / 2 GB</b></div>
+                        <div class="stat_row"><span>L1d</span><b>32 KiB</b></div>
+                        <div class="stat_row"><span>L2</span><b>1 MiB</b></div>
+                        <div class="stat_row"><span>L3</span><b>32 MiB</b></div>
+                    </div>
+
+                    <div class="stat_section">
+                        <div class="section_title">Traffic</div>
+                        <div class="stat_row"><span>Total</span><b>12,482</b></div>
+                        <div class="stat_row"><span>Unique</span><b>1,936</b></div>
+                        <div class="stat_row"><span>Today</span><b>43</b></div>
+                    </div>
+                </div>
+
+                <div class="stats_footer">
+                    <span class="stats_version">v0.1.0-alpha</span>
+                    <span class="stats_build">build 20250515</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
