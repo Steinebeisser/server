@@ -43,13 +43,13 @@ LDLIBS   := -luring
 INCLUDES := -Isrc -I. -include src/util/no_heap.hpp
 
 
-FLAGS_RELEASE  := -O3 -DNDEBUG -march=native -DPGS_LOG_ENABLED=false
-FLAGS_PROFILE  := -O2 -g3 -ggdb3 -gdwarf-4 -DNDEBUG -fno-omit-frame-pointer \
-                  -fno-optimize-sibling-calls
-FLAGS_PROFILING := $(FLAGS_PROFILE) -DPROFILING
-FLAGS_SAN      := -O1 -g -ggdb3 -fno-omit-frame-pointer \
-                  -fsanitize=address,undefined
-FLAGS_DEBUG    := -Og -g -ggdb3 -fno-omit-frame-pointer
+FLAGS_RELEASE       := -O3 -DNDEBUG -march=native -DPGS_LOG_COMPILE_LEVEL=3 # error
+FLAGS_PROFILE       := -O2 -g3 -ggdb3 -gdwarf-4 -DNDEBUG -fno-omit-frame-pointer \
+                         -fno-optimize-sibling-calls
+FLAGS_PROFILING     := $(FLAGS_PROFILE) -DPROFILING
+FLAGS_SAN           := -O1 -g -ggdb3 -fno-omit-frame-pointer \
+                         -fsanitize=address,undefined
+FLAGS_DEBUG         := -Og -g -ggdb3 -fno-omit-frame-pointer
 
 rwildcard = $(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
@@ -81,9 +81,10 @@ $(TARGET)_$(1): $$(OBJS_$(1))
 endef
 
 $(eval $(call make_target,release,  $(FLAGS_RELEASE),))
+$(eval $(call make_target,release_log,  $(FLAGS_RELEASE_LOGS),))
 $(eval $(call make_target,profile,  $(FLAGS_PROFILE),))
 $(eval $(call make_target,profiling,$(FLAGS_PROFILING),))
-$(eval $(call make_target,san,      $(FLAGS_SAN),  -fsanitize=address$(,)undefined))
+$(eval $(call make_target,san,      $(FLAGS_SAN),))
 $(eval $(call make_target,debug,    $(FLAGS_DEBUG),))
 
 
@@ -113,6 +114,7 @@ build/%.o: src/%.cpp
 
 debug:     $(TARGET)_debug ## dev, debug symbols, -Og
 release:   $(TARGET)_release ## prod, -O3, -march=native
+release_log:   $(TARGET)_release_log ## prod, -O3, -march=native, but with logs
 profile:   $(TARGET)_profile ## perf
 profiling: $(TARGET)_profiling ## profile + timings
 san:       $(TARGET)_san ## assan + ubsan
