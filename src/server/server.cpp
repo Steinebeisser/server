@@ -165,8 +165,7 @@ void Server::submit_read(Request *req, int client_fd) {
         PGS_LOG_ERROR("io_uring_get_sqe timeout sqe failed, no sqe available");
         return;
     }
-    auto timeout = KEEP_ALIVE_TIMEOUT;
-    io_uring_prep_link_timeout(timeout_sqe, &timeout, 0);
+    io_uring_prep_link_timeout(timeout_sqe, const_cast<__kernel_timespec*>(&KEEP_ALIVE_TIMEOUT), 0);
     io_uring_sqe_set_data(timeout_sqe, nullptr);
 
 }
