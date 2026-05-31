@@ -69,7 +69,7 @@ static inline std::string_view version_to_string(HttpVersion v) {
     X(NotFound, "Not Found", 404) \
     X(NotImplemented, "Not Implemented", 501) \
 
-enum class HttpStatus {
+enum class HttpStatus : uint16_t {
 #define X(enum_name, string, value) \
     enum_name = value,
     HTTP_STATUS_LIST

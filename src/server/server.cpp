@@ -3,21 +3,64 @@
 #include "http/response.hpp"
 #include "http/router.hpp"
 #include "http/types.hpp"
+#include "stats/stat_container.hpp"
+#include "stats/stats.hpp"
 #include "third_party/pgs_macros.h"
 #include "server/request.hpp"
 #include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <liburing.h>
 #include <liburing/io_uring.h>
 #include <string_view>
 #include <unistd.h>
 #include <variant>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include "stats/location.hpp"
 
+#ifndef PGS_DB_NAME
+#define PGS_DB_NAME "server_stats.db"
+#endif
 
 #define PGS_LOG_TU_TAG "Server"
 #define PGS_LOG_TU_ENABLED true
 #include "third_party/pgs_log.h"
+
+#ifdef ENABLE_GEOIP
+
+static char* write_u8(char* p, uint8_t n) {
+    if (n >= 100) { *p++ = static_cast<char>('0' + n / 100); n %= 100; *p++ = static_cast<char>('0' + n / 10); }
+    else if (n >= 10) { *p++ = static_cast<char>('0' + n / 10); }
+    *p++ = static_cast<char>('0' + n % 10);
+    return p;
+}
+
+static void sockaddr_to_str(const sockaddr_storage &addr, char *buf, std::size_t len) {
+    if (addr.ss_family == AF_INET) {
+        const auto *a4 = reinterpret_cast<const sockaddr_in*>(&addr);
+        inet_ntop(AF_INET, &a4->sin_addr, buf, static_cast<socklen_t>(len));
+        return;
+    }
+
+    const auto *a6 = reinterpret_cast<const sockaddr_in6*>(&addr);
+    if (IN6_IS_ADDR_V4MAPPED(&a6->sin6_addr)) {
+        const uint8_t *b = a6->sin6_addr.s6_addr + 12;
+        char *p = buf;
+        p = write_u8(p, b[0]); *p++ = '.';
+        p = write_u8(p, b[1]); *p++ = '.';
+        p = write_u8(p, b[2]); *p++ = '.';
+        p = write_u8(p, b[3]);
+        *p = '\0';
+    } else {
+        inet_ntop(AF_INET6, &a6->sin6_addr, buf, static_cast<socklen_t>(len));
+    }
+}
+
+#endif // ENABLE_GEOIP
 
 Request* Server::alloc_request() {
     for (std::size_t i = 0; i < requests_.size(); ++i) {
@@ -41,8 +84,15 @@ void Server::free_request(Request* req) {
 }
 
 
-Server::Server(int server_fd)
+Server::Server(int server_fd
+#ifdef ENABLE_GEOIP
+        , IP2Location *geoip
+#endif
+        )
     : server_fd_(server_fd)
+#ifdef ENABLE_GEOIP
+        , geoip_(geoip)
+#endif
 {
     PGS_LOG_DEBUG("Creating Server");
     int res = io_uring_queue_init(SQ_ENTRIES, &ring_, 0);
@@ -50,6 +100,14 @@ Server::Server(int server_fd)
         PGS_LOG_FATAL("Failed to init io_uring queue: %s", strerror(-res));
         exit(1);
     }
+
+#ifdef ENABLE_STATS
+    if (!stats_.init(PGS_DB_NAME)) {
+#ifdef EXIT_IF_STATS_FAIL_INITIALIZING
+        exit(1);
+#endif
+    }
+#endif
 }
 
 Server::~Server() {
@@ -92,7 +150,7 @@ void Server::run() {
 
             ret = io_uring_peek_cqe(&ring_, &cqe);
             if (ret == -EAGAIN) {
-                break;     // no remaining work in completion queue
+                break;
             }
         }
 
@@ -144,6 +202,8 @@ void Server::submit_read(Request *req, int client_fd) {
     req->fd = client_fd;
     req->client_addr_len = sizeof(req->client_addr);
 
+    clock_gettime(CLOCK_MONOTONIC, &req->start_time);
+
     io_uring_sqe *sqe = io_uring_get_sqe(&ring_);
     if (!sqe) {
         PGS_LOG_ERROR("[submit_read] io_uring_get_sqe failed, no sqe available");
@@ -186,6 +246,40 @@ int Server::handle_accept(Request *req, int res) {
         return submitted;
     }
 
+#ifdef ENABLE_GEOIP
+    if (geoip_) {
+        char ip_str[INET6_ADDRSTRLEN] {};
+        sockaddr_to_str(req->client_addr, ip_str, sizeof(ip_str));
+
+
+        IP2LocationRecord *geo = IP2Location_get_all(geoip_, const_cast<char*>(ip_str));
+        if (geo) {
+            PGS_LOG_DEBUG("Connection from %s (%s, %s, %s)",
+                ip_str,
+                geo->country_short,
+                geo->region,
+                geo->city
+            );
+
+            if (geo->country_short) {
+                strncpy(rreq->country_code, geo->country_short, 2);
+                rreq->country_code[2] = '\0';
+            } else {
+                rreq->country_code[0] = '\0';
+            }
+
+            const char* sub_code = LocationMapper::get_subdivision_code_by_name(geo->region);
+            if (sub_code) {
+                strncpy(rreq->subdivision_code, sub_code, sizeof(rreq->subdivision_code)-1);
+                rreq->subdivision_code[sizeof(rreq->subdivision_code)-1] = '\0';
+            } else {
+                rreq->subdivision_code[0] = '\0';
+            }
+            IP2Location_free_record(geo);
+        }
+    }
+#endif
+
     // io_uring_prep_accept(3) generates the installed file descriptor as its result.
     submit_read(rreq, res);
     return submitted + 1;
@@ -202,7 +296,7 @@ static constexpr std::string_view NOT_FOUND_FALLBACK = { "NOT FOUND" };
 
 int Server::handle_read(Request *req, int res) {
     if (res < 0) {
-        if (-res != ECONNRESET && -res != ENOTCONN && -res != EPIPE && -res != -ECANCELED) {
+        if (-res != ECONNRESET && -res != ENOTCONN && -res != EPIPE && -res != ECANCELED) {
             PGS_LOG_ERROR("recv failed: %s", strerror(-res));
         }
         submit_close(req);
@@ -226,6 +320,12 @@ int Server::handle_read(Request *req, int res) {
 
     if (std::holds_alternative<HttpRequestView>(http_res.value())) {
         HttpRequestView view = get<HttpRequestView>(http_res.value());
+        const auto& path = view.target_path;
+        size_t len = std::min(path.size(), sizeof(req->endpoint) - 1);
+        memcpy(req->endpoint, path.data(), len);
+        req->endpoint[len] = '\0';
+        req->method = view.method;
+        req->version = view.version;
 
         const Route* r = router_match(view.target_path, view.method);
         if (r == nullptr) {
@@ -260,6 +360,54 @@ int Server::handle_write(Request *req, int res) {
         submit_write(req);
         return 1;
     }
+
+#ifdef ENABLE_STATS
+    timespec end_time;
+    clock_gettime(CLOCK_MONOTONIC, &end_time);
+    time_t sec_diff = end_time.tv_sec - req->start_time.tv_sec;
+    long nsec_diff = end_time.tv_nsec - req->start_time.tv_nsec;
+
+    auto latency_ns = (sec_diff) * 1'000'000'000LL + nsec_diff;
+    auto latency_ms = latency_ns / 1'000'000;
+
+    StatRecord *sr = stats_.get();
+    *sr = {
+        .timestamp = time(nullptr),
+
+        .endpoint = {},
+        .method = req->method,
+        .latency_ns = latency_ns,
+        .request_bytes =  static_cast<int64_t>(req->len),
+        .response_bytes = static_cast<int64_t>(req->bytes_sent),
+        .status_code = req->response_status,
+        .version = req->version,
+
+#ifdef ENABLE_GEOIP
+        .country_code = {},
+        .subdivision_code = {},
+#endif
+    };
+#ifdef ENABLE_GEOIP
+    memcpy(sr->country_code, req->country_code, sizeof(sr->country_code));
+    memcpy(sr->subdivision_code, req->subdivision_code, sizeof(sr->subdivision_code));
+#endif
+
+    size_t len = 0;
+    while (len < strlen(req->endpoint) && req->endpoint[len] != '\0') ++len;
+    size_t copy_len = std::min(len, sizeof(sr->endpoint) - 1);
+    memcpy(sr->endpoint, req->endpoint, copy_len);
+    sr->endpoint[copy_len] = '\0';
+
+    stats_.maybe_flush();
+
+
+#ifdef ENABLE_GEOIP
+    PGS_LOG_DEBUG("TS: %zu\n" "Endpoint %s\n" "Methods: %s\n" "Latency NS: %ld (%lld ms)\n" "REquest Bytes: %zu\n" "Response bytes: %zu\n" "Stats Code: %s\n" "Country: %s\n" "Subdivision: %s\n" "Version: %s\n", sr->timestamp, sr->endpoint, method_to_string(sr->method).data(), sr->latency_ns, latency_ms, sr->request_bytes, sr->response_bytes, http_status_to_string(sr->status_code).data(), sr->country_code, sr->subdivision_code, version_to_string(sr->version).data());
+#else
+    PGS_LOG_DEBUG("TS: %zu\n" "Endpoint %s\n" "Methods: %s\n" "Latency NS: %ld (%lld ms)\n" "REquest Bytes: %zu\n" "Response bytes: %zu\n" "Stats Code: %s\n" "Version: %s\n", sr->timestamp, sr->endpoint, method_to_string(sr->method).data(), sr->latency_ns, latency_ms, sr->request_bytes, sr->response_bytes, http_status_to_string(sr->status_code).data(), version_to_string(sr->version).data());
+#endif
+
+#endif // ENABLE_STATS
 
     int fd = req->fd;
     req->reset();

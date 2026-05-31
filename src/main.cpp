@@ -18,6 +18,10 @@
 
 #include "third_party/pgs_log.h"
 
+#ifdef ENABLE_GEOIP
+#   include "third_party/IP2Location.h"
+#endif
+
 #define PORT_MAX 65535
 // CQ will have double the entries
 //   By default, the CQ ring will have twice the number of entries as specified by entries for the SQ ring.
@@ -55,6 +59,23 @@ int main(int argc, char **argv) {
         PGS_LOG_ERROR("Failed to parse args");
         return 1;
     }
+
+#ifdef ENABLE_GEOIP
+    PGS_LOG_ERROR("HAVE GEO IP TRACKING ENABLED");
+    IP2Location *IP2LocationObj = IP2Location_open(const_cast<char*>("third_party/ip2location-db-bin/IP2LOCATION-LITE-DB3.IPV6.BIN"));
+
+    printf("IP2Location API version: %s \n", IP2Location_api_version_string());
+
+    if (IP2LocationObj == NULL)
+    {
+        printf("Please install the database in correct path.\n");
+        return -1;
+    }
+
+    fprintf(stdout,"IP2Location BIN version: %s\n", IP2Location_bin_version(IP2LocationObj));
+
+    IP2Location_open_mem(IP2LocationObj, IP2LOCATION_SHARED_MEMORY);
+#endif
 
 
     if (args.help_present) {
@@ -161,7 +182,12 @@ int main(int argc, char **argv) {
         dual_stack ? "  (dual-stack IPv4+IPv6)" : ""
     );
 
-    static Server server(server_fd);
+    static Server server(server_fd
+#ifdef ENABLE_GEOIP
+            , IP2LocationObj
+#endif
+            );
+
     server.run();
 }
 

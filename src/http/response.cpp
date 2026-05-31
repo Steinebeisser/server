@@ -59,6 +59,7 @@ PGS_WARN_UNUSED_RESULT bool build_response_header(Request &req, const HttpRespon
 }
 
 void ResponseBuilder::send(Server &server, Request &req, const std::string_view &body) {
+    req.response_status = view_.status;
     if (!req.response.set_body_copy(body) || !build_response_header(req, view_))
         server.submit_close(&req);
     else
@@ -66,6 +67,7 @@ void ResponseBuilder::send(Server &server, Request &req, const std::string_view 
 }
 
 void ResponseBuilder::send_static(Server &server, Request &req, const std::string_view &body) {
+    req.response_status = view_.status;
     req.response.set_body_static(body);
     if (!build_response_header(req, view_))
         server.submit_close(&req);

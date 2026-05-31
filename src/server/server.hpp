@@ -4,9 +4,22 @@
 #include "request.hpp"
 #include "http/response.hpp"
 
+#ifdef ENABLE_STATS
+#   include "stats/stat_container.hpp"
+#endif
+
+#ifdef ENABLE_GEOIP
+#   include "third_party/IP2Location.h"
+#endif
+
+
 class Server {
 public:
-    explicit Server(int server_fd);
+    explicit Server(int server_fd
+#ifdef ENABLE_GEOIP
+        , IP2Location *geoip
+#endif
+            );
     ~Server();
 
     void run();
@@ -24,6 +37,14 @@ private:
 
     int server_fd_;
     io_uring ring_ {};
+
+#ifdef ENABLE_STATS
+    StatContainer stats_;
+#endif
+
+#ifdef ENABLE_GEOIP
+    IP2Location *geoip_ { nullptr };
+#endif
 
     void submit_accept(Request *req);
     void submit_read  (Request *req, int client_fd);

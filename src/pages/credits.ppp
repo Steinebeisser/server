@@ -77,7 +77,8 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:nvim.svg$]" alt="">
                 <div class="title">Neovim Logo</div>
-                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:Neovim-logo.svg" target="_blank" rel="noopener">Wikimedia Commons</a> · Jason Long / neovim</div>
+                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:Neovim-logo.svg" target="_blank"
+                        rel="noopener">Wikimedia Commons</a> · Jason Long / neovim</div>
                 <span class="license cc-by">CC BY 3.0</span>
             </div>
             <div class="separator"></div>
@@ -85,7 +86,8 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:hyprland.svg$]" alt="">
                 <div class="title">Hyprland Logo</div>
-                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:Hyprland_Logo_Icon.svg" target="_blank" rel="noopener">Wikimedia Commons</a> · Hyprland project</div>
+                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:Hyprland_Logo_Icon.svg"
+                        target="_blank" rel="noopener">Wikimedia Commons</a> · Hyprland project</div>
                 <span class="license bsd">BSD 3-Clause</span>
             </div>
             <div class="separator"></div>
@@ -93,7 +95,8 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:c.svg$]" alt="">
                 <div class="title">C Programming Language Logo</div>
-                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:C_Programming_Language.svg" target="_blank" rel="noopener">Wikimedia Commons</a></div>
+                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:C_Programming_Language.svg"
+                        target="_blank" rel="noopener">Wikimedia Commons</a></div>
                 <span class="license pd">Public Domain</span>
             </div>
             <div class="separator"></div>
@@ -101,7 +104,8 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:c_hashtag.svg$]" alt="">
                 <div class="title">C# Logo</div>
-                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:Logo_C_sharp.svg" target="_blank" rel="noopener">Wikimedia Commons</a> · Microsoft, Public domain</div>
+                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:Logo_C_sharp.svg" target="_blank"
+                        rel="noopener">Wikimedia Commons</a> · Microsoft, Public domain</div>
                 <span class="license pd">Public Domain</span>
             </div>
             <div class="separator"></div>
@@ -109,7 +113,8 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:c_pipi.svg$]" alt="">
                 <div class="title">C++ Logo (ISO)</div>
-                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:ISO_C%2B%2B_Logo.svg" target="_blank" rel="noopener">Wikimedia Commons</a> · Ineligible for copyright</div>
+                <div class="source"><a href="https://commons.wikimedia.org/wiki/File:ISO_C%2B%2B_Logo.svg"
+                        target="_blank" rel="noopener">Wikimedia Commons</a> · Ineligible for copyright</div>
                 <span class="license pd">Public Domain</span>
             </div>
         </section>
@@ -117,16 +122,17 @@
         <section class="credit_section league_of_legends">
             <h2>League of Legends</h2>
 
-            <div class="riot_notice">
+            <div class="notice">
                 This Website was created under Riot Games'
                 <a href="https://www.riotgames.com/en/legal">"Legal Jibber Jabber"</a>
-                policy using assets owned by Riot Games.  Riot Games does not endorse or sponsor this project.
+                policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.
             </div>
 
             <div class="credit_item">
                 <img class="credit_preview cover" src="[$ASSET:Dawnbringer_profileicon.png$]" alt="">
                 <div class="title">Dawnbringer Profile Icon</div>
-                <div class="source"><a href="https://wiki.leagueoflegends.com" target="_blank" rel="noopener">League of Legends Wiki</a> · © Riot Games, Inc.</div>
+                <div class="source"><a href="https://wiki.leagueoflegends.com" target="_blank" rel="noopener">League of
+                        Legends Wiki</a> · © Riot Games, Inc.</div>
                 <span class="license riot">© Riot Games</span>
             </div>
             <div class="separator"></div>
@@ -134,7 +140,8 @@
             <div class="credit_item">
                 <img class="credit_preview cover" src="[$ASSET:Riven_ValiantSwordSkin.jpg$]" alt="">
                 <div class="title">Riven - Valiant Sword Skin Splash</div>
-                <div class="source"><a href="https://wiki.leagueoflegends.com" target="_blank" rel="noopener">League of Legends Wiki</a> · © Riot Games, Inc.</div>
+                <div class="source"><a href="https://wiki.leagueoflegends.com" target="_blank" rel="noopener">League of
+                        Legends Wiki</a> · © Riot Games, Inc.</div>
                 <span class="license riot">© Riot Games</span>
             </div>
             <div class="separator"></div>
@@ -142,7 +149,9 @@
             <div class="credit_item">
                 <img class="credit_preview cover" src="[$ASSET:battle-bunny-granite.webp$]" alt="">
                 <div class="title">Riven - Battle Bunny Granite CN exclusive Chroma</div>
-                <div class="source"><a href="https://www.uhdpaper.com/2023/01/riven-battle-bunny-granite-4k-8k-3390i.html?m=0" target="_blank" rel="noopener">UHD Paper</a> · underlying art © Riot Games, Inc.</div>
+                <div class="source"><a
+                        href="https://www.uhdpaper.com/2023/01/riven-battle-bunny-granite-4k-8k-3390i.html?m=0"
+                        target="_blank" rel="noopener">UHD Paper</a> · underlying art © Riot Games, Inc.</div>
                 <span class="license riot">© Riot Games</span>
             </div>
         </section>
@@ -153,7 +162,8 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:Alpha_Ascension_Implant.webp$]" alt="">
                 <div class="title">Alpha Ascension Implant</div>
-                <div class="source"><a href="https://ark.fandom.com" target="_blank" rel="noopener">ARK Wiki (Fandom)</a> · game © Studio Wildcard</div>
+                <div class="source"><a href="https://ark.fandom.com" target="_blank" rel="noopener">ARK Wiki
+                        (Fandom)</a> · game © Studio Wildcard</div>
                 <span class="license cc-byncsa">CC BY-NC-SA 3.0</span>
             </div>
             <div class="separator"></div>
@@ -161,7 +171,8 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:Managarmr.webp$]" alt="">
                 <div class="title">Managarmr</div>
-                <div class="source"><a href="https://ark.fandom.com" target="_blank" rel="noopener">ARK Wiki (Fandom)</a> · game © Studio Wildcard</div>
+                <div class="source"><a href="https://ark.fandom.com" target="_blank" rel="noopener">ARK Wiki
+                        (Fandom)</a> · game © Studio Wildcard</div>
                 <span class="license cc-byncsa">CC BY-NC-SA 3.0</span>
             </div>
             <div class="separator"></div>
@@ -169,8 +180,41 @@
             <div class="credit_item">
                 <img class="credit_preview" src="[$ASSET:Woolly_Rhinoceros.webp$]" alt="">
                 <div class="title">Woolly Rhinoceros</div>
-                <div class="source"><a href="https://ark.fandom.com" target="_blank" rel="noopener">ARK Wiki (Fandom)</a> · game © Studio Wildcard</div>
+                <div class="source"><a href="https://ark.fandom.com" target="_blank" rel="noopener">ARK Wiki
+                        (Fandom)</a> · game © Studio Wildcard</div>
                 <span class="license cc-byncsa">CC BY-NC-SA 3.0</span>
+            </div>
+        </section>
+
+        <section class="credit_section">
+            <h2>Data Sources</h2>
+
+            <div class="notice">
+                This site uses the IP2Location LITE database for <a href="https://lite.ip2location.com">IP
+                    geolocation</a>.
+            </div>
+
+            <div class="credit_item">
+                <img class="credit_preview" src="" alt="">
+                <div class="title">IP2Location LITE Database</div>
+                <div class="source">
+                    <a href="https://lite.ip2location.com" target="_blank" rel="noopener">IP2Location.com</a>
+                    · © 2025 IP2Location.com
+                </div>
+                <span class="license ip2location">IP2Location LITE</span>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="credit_item">
+                <img class="credit_preview" src="" alt="">
+                <div class="title">iso3166-2 JSON Data</div>
+                <div class="source">
+                    <a href="https://pypi.org/project/iso3166-2/" target="_blank"
+                        rel="noopener">amckenna41/iso3166-2</a>
+                    · AJ McKenna
+                </div>
+                <span class="license mit">MIT</span>
             </div>
         </section>
     </div>

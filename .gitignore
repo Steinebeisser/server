@@ -10,3 +10,6 @@ src/generated/
 *.d
 *.o
 *.map
+*.db
+config.mk
+third_party/ip2location-db-bin/*

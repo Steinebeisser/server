@@ -3,11 +3,11 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <iostream>
 #include <string_view>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/uio.h>
+#include "http/types.hpp"
 #include "third_party/pgs_macros.h"
 #include "third_party/pgs_log.h"
 
@@ -116,10 +116,21 @@ struct Request {
 
     std::array<char, REQUEST_BUFFER_SIZE>   buffer;
     Response                        response;
-    std::size_t                     len                      {0};
-    std::size_t                     off                      {0};
+    size_t                          len                      {0};
+    size_t                          off                      {0};
 
     size_t                          bytes_sent               {0};
+
+    timespec start_time {};
+    char endpoint[64] {};
+    HttpMethod method {HttpMethod::Unknown};
+    HttpVersion version {HttpVersion::Unknown};
+    HttpStatus response_status {HttpStatus::Ok}; // filled by ResponseBuilder or route handler
+
+#ifdef ENABLE_GEOIP
+    char        country_code[3];
+    char        subdivision_code[6];
+#endif
 
     void reset() {
         type            = Type::Accept;
