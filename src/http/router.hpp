@@ -13,3 +13,5 @@ struct Route {
 
 
 const Route *router_match(const std::string_view &route, const HttpMethod &method);
+
+void handle_not_found(Server &server, Request &req, const HttpRequestView &view);

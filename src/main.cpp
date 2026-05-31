@@ -61,19 +61,15 @@ int main(int argc, char **argv) {
     }
 
 #ifdef ENABLE_GEOIP
-    PGS_LOG_ERROR("HAVE GEO IP TRACKING ENABLED");
     IP2Location *IP2LocationObj = IP2Location_open(const_cast<char*>("third_party/ip2location-db-bin/IP2LOCATION-LITE-DB3.IPV6.BIN"));
 
     printf("IP2Location API version: %s \n", IP2Location_api_version_string());
 
     if (IP2LocationObj == NULL)
     {
-        printf("Please install the database in correct path.\n");
+        PGS_PANIC("Please install the database in correct path.\n");
         return -1;
     }
-
-    fprintf(stdout,"IP2Location BIN version: %s\n", IP2Location_bin_version(IP2LocationObj));
-
     IP2Location_open_mem(IP2LocationObj, IP2LOCATION_SHARED_MEMORY);
 #endif
 

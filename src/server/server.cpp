@@ -292,7 +292,6 @@ static constexpr HttpRequestView not_found_view {
         .headers = {},
         .headers_count = 0
 };
-static constexpr std::string_view NOT_FOUND_FALLBACK = { "NOT FOUND" };
 
 int Server::handle_read(Request *req, int res) {
     if (res < 0) {
@@ -329,14 +328,7 @@ int Server::handle_read(Request *req, int res) {
 
         const Route* r = router_match(view.target_path, view.method);
         if (r == nullptr) {
-            const Route* not_found = router_match(not_found_view.target_path, HttpMethod::Get);
-            if (not_found == nullptr) {
-                ResponseBuilder{HttpStatus::NotFound}
-                    .send_static(*this, *req, NOT_FOUND_FALLBACK);
-            } else {
-                PGS_LOG_DEBUG("NICHT FUNDI SENDI MÜSSI");
-                not_found->handler(*this, *req, not_found_view);
-            }
+            handle_not_found(*this, *req, view);
             return 1;
         } else {
             r->handler(*this, *req, view);

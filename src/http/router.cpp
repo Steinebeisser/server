@@ -9,6 +9,22 @@
 #define PGS_LOG_TU_ENABLED true
 #include "third_party/pgs_log.h"
 
+static constexpr std::string_view NOT_FOUND_ROUTE = "/404/";
+static constexpr std::string_view NOT_FOUND_FALLBACK = { "NOT FOUND" };
+
+void handle_not_found(Server &server, Request &req, const HttpRequestView &view) {
+    (void)view;
+    for (const auto &p : generated_pages::pages) {
+        if (p.route == NOT_FOUND_ROUTE) {
+            ResponseBuilder{HttpStatus::NotFound}
+                .content_type("text/html")
+                .send_static(server, req, p.html);
+            return;
+        }
+    }
+    ResponseBuilder{HttpStatus::NotFound}
+        .send_static(server, req, NOT_FOUND_FALLBACK);
+}
 
 static void handle_page(Server &server, Request &req, const HttpRequestView &view) {
     for (const auto &p : generated_pages::pages) {
