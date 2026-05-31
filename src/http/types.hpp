@@ -110,6 +110,7 @@ struct HttpRequestView {
     HttpMethod method{HttpMethod::Unknown};
     std::string_view target_path{};
     HttpVersion version{HttpVersion::Unknown};
+    std::string_view user_agent{};
 
     HttpHeaderView headers[MAX_REQUEST_HEADERS]{};
     std::size_t headers_count{0};

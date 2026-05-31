@@ -325,6 +325,9 @@ int Server::handle_read(Request *req, int res) {
         req->endpoint[len] = '\0';
         req->method = view.method;
         req->version = view.version;
+        len = std::min(view.user_agent.size(), sizeof(req->user_agent) - 1);
+        memcpy(req->user_agent, view.user_agent.data(), len);
+        req->user_agent[len] = '\0';
 
         const Route* r = router_match(view.target_path, view.method);
         if (r == nullptr) {
@@ -367,6 +370,7 @@ int Server::handle_write(Request *req, int res) {
         .timestamp = time(nullptr),
 
         .endpoint = {},
+        .user_agent = {},
         .method = req->method,
         .latency_ns = latency_ns,
         .request_bytes =  static_cast<int64_t>(req->len),
@@ -389,6 +393,12 @@ int Server::handle_write(Request *req, int res) {
     size_t copy_len = std::min(len, sizeof(sr->endpoint) - 1);
     memcpy(sr->endpoint, req->endpoint, copy_len);
     sr->endpoint[copy_len] = '\0';
+
+    len = 0;
+    while (len < strlen(req->user_agent) && req->user_agent[len] != '\0') ++len;
+    copy_len = std::min(len, sizeof(sr->user_agent) - 1);
+    memcpy(sr->user_agent, req->user_agent, copy_len);
+    sr->user_agent[copy_len] = '\0';
 
     stats_.maybe_flush();
 

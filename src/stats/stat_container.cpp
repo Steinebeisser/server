@@ -39,7 +39,8 @@ bool StatContainer::init(const char *db_path) {
     sqlite3_prepare_v2(db_, INSERT_STMT_RAW, strlen(INSERT_STMT_RAW) + 1, &insert_statement_, &test);
 
     if (!insert_statement_) {
-        PGS_LOG_ERROR("Failed to create table stmt, not tracking stats");
+        PGS_LOG_ERROR("Failed to create table stmt: %s", sqlite3_errmsg(db_));
+        PGS_LOG_ERROR("Statement was: %s", CREATE_STMT_RAW);
         return false;
     }
 

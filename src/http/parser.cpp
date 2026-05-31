@@ -144,6 +144,11 @@ HttpParseResult parse_http(Request &req) {
             .name = name,
             .value = value
         };
+
+        if (name.size() == 10) {
+            if (name == "User-Agent" || name == "user-agent")
+                view.user_agent = value;
+        }
     }
 
     return view;

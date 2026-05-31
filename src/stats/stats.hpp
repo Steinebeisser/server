@@ -9,18 +9,21 @@
 // https://pypi.org/project/iso3166-2/
 
 typedef char endpoint_string[64];
+typedef char user_agent_string[256];
 typedef char country_code_string[3];
 typedef char subdivision_code_string[6];
 
 #define NORMAL_STAT_FIELDS \
-    X(timestamp,      int64_t,          INTEGER)     \
-    X(endpoint,       endpoint_string,  VARCHAR(64)) \
-    X(method,         HttpMethod,       INTEGER)     \
-    X(latency_ns,     int64_t,          INTEGER)     \
-    X(request_bytes,  int64_t,          INTEGER)     \
-    X(response_bytes, int64_t,          INTEGER)     \
-    X(status_code,    HttpStatus,       INTEGER)     \
-    X(version,        HttpVersion,      INTEGER)
+    X(timestamp,      int64_t,           INTEGER)     \
+    X(endpoint,       endpoint_string,   VARCHAR(64)) \
+    X(user_agent,     user_agent_string, VARCHAR(256)) \
+    X(method,         HttpMethod,        INTEGER)     \
+    X(latency_ns,     int64_t,           INTEGER)     \
+    X(request_bytes,  int64_t,           INTEGER)     \
+    X(response_bytes, int64_t,           INTEGER)     \
+    X(status_code,    HttpStatus,        INTEGER)     \
+    X(version,        HttpVersion,       INTEGER)
+
 
 #ifdef ENABLE_GEOIP
 #define GEOIP_STAT_FIELDS \

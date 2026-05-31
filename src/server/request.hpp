@@ -126,6 +126,7 @@ struct Request {
     HttpMethod method {HttpMethod::Unknown};
     HttpVersion version {HttpVersion::Unknown};
     HttpStatus response_status {HttpStatus::Ok}; // filled by ResponseBuilder or route handler
+    char user_agent[256]{};
 
 #ifdef ENABLE_GEOIP
     char        country_code[3];
@@ -142,6 +143,7 @@ struct Request {
         off             = 0;
 
         bytes_sent      = 0;
+        user_agent[0]   = '\0';
         response.reset();
     }
 };
