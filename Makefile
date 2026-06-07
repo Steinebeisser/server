@@ -85,12 +85,14 @@ SUBDIVISION_JSON := third_party/iso3166-2.json
 PAGEGEN          := build/pagegen
 PAGES_DIR        := src/pages
 CSS_SRC          := src/assets/styles.css
-ASSETS_DIR       := src/assets/img
+ASSETS_DIR       := src/assets/media
 PAGES_HPP        := src/generated/pages.hpp
 ASSETS_HPP       := src/generated/assets.hpp
 SUBDIVISION_HPP  := src/generated/subdivisions.hpp
 PAGES            := $(wildcard $(PAGES_DIR)/*.ppp)
 ASSETS           := $(wildcard $(ASSETS_DIR)*)
+
+THEME_VALIDATION := build/.themes_validated
 
 define make_target
 BUILD_DIR_$(1) := build/$(1)
@@ -114,6 +116,12 @@ $(TARGET)_$(1): $$(OBJS_$(1)) $$(GEOIP_OBJ_$(1))
 	$(CXX) $(CXXFLAGS) $(2) $(3) $(LDFLAGS) $(INCLUDES) $$^ -o $$@ $(LDLIBS)
 endef
 
+$(THEME_VALIDATION): src/pages/skeleton.ppp tools/validate_themes.py
+	@mkdir -p build
+	python3 tools/validate_themes.py src/pages/skeleton.ppp
+	@touch $@
+
+
 $(eval $(call make_target,release,  $(FLAGS_RELEASE), $(FLAGS_RELEASE_C)))
 $(eval $(call make_target,profile,  $(FLAGS_PROFILE), $(FLAGS_PROFILE_C)))
 $(eval $(call make_target,profiling,$(FLAGS_PROFILING), $(FLAGS_PROFILING_C)))
@@ -127,7 +135,7 @@ $(PAGEGEN): $(PAGEGEN_SRC)
 	@$(CXX) -std=c++23 -O2 -I. -Wall -Wextra -o $@ $<
 
 
-$(PAGES_HPP) $(ASSETS_HPP): $(PAGEGEN) $(PAGES) $(CSS_SRC) $(ASSETS)
+$(PAGES_HPP) $(ASSETS_HPP): $(PAGEGEN) $(PAGES) $(CSS_SRC) $(ASSETS) $(THEME_VALIDATION)
 	@mkdir -p $(@D)
 	$(PAGEGEN) -s $(PAGES_DIR) -o $(PAGES_HPP) -c $(CSS_SRC) \
 	           -a $(ASSETS_DIR) -A $(ASSETS_HPP)

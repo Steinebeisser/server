@@ -98,6 +98,10 @@ static const char *mime_for_ext(const std::string &ext) {
     if (ext == ".woff2")                 return "font/woff2";
     if (ext == ".ttf")                   return "font/ttf";
     if (ext == ".js")                    return "application/javascript";
+    if (ext == ".mp3")                   return "audio/mpeg";
+    if (ext == ".ogg")                   return "audio/ogg";
+    if (ext == ".wav")                   return "audio/wav";
+    if (ext == ".flac")                  return "audio/flac";
     return "application/octet-stream";
 }
 

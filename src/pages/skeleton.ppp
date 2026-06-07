@@ -11,13 +11,157 @@
     <link rel="icon" type="image/png" sizes="32x32" href="[$ASSET:favicon-32x32.png$]">
     <link rel="icon" type="image/png" sizes="96x96" href="[$ASSET:favicon-96x96.png$]">
     <link rel="apple-touch-icon" sizes="180x180" href="[$ASSET:apple-touch-icon.png$]">
+
+    <script>
+        const THEMES = {
+            "gold": {
+                "--gold": "#c89b3c",
+                "--gold-light": "#f0e6d2",
+                "--gold-dim": "#785a28",
+                "--gold-border": "rgba(120, 90, 40, 0.45)",
+                "--gold-sep": "rgba(120, 90, 40, 0.28)",
+                "--gold-rgb": "200, 155, 60",
+                "--gold-dim-rgb": "120, 90, 40",
+                "--gold-light-rgb": "240, 230, 210",
+
+                "--text": "#cbbc90",
+                "--text-section": "#d4aa5a",
+                "--text-label": "rgba(240, 230, 210, 0.9)",
+                "--text-white": "#ffffff",
+                "--text-muted-1": "#cccccc",
+                "--text-muted-2": "#bbbbbb",
+                "--text-link": "#8ab4f8",
+                "--text-danger": "#f8a0a0",
+
+                "--bg-dark": "rgba(3, 9, 18, 0.92)",
+                "--bg-panel": "rgba(8, 18, 32, 0.82)",
+                "--bg-base-rgb": "3, 9, 18",
+                "--bg-base-alt-rgb": "2, 10, 18",
+                "--bg-darkest": "#010a13",
+                "--bg-card-deep": "#091420",
+                "--bg-card": "#1e2328",
+                "--bg-card-border": "#3c3c41",
+                "--bg-body": "blue",
+
+                "--online": "#3ddc84",
+                "--online-rgb": "61, 220, 132",
+                "--blue": "#4fc3f7",
+
+                "--cyan": "#00f2ff",
+                "--cyan-dim": "#00c2cc",
+                "--cyan-glow": "#00b7ff",
+                "--cyan-rgb": "0, 242, 255",
+
+                "--danger-rgb": "200, 30, 30",
+
+                "--badge-cc-rgb": "34, 139, 230",
+                "--badge-gpl-rgb": "255, 165, 0",
+                "--badge-pd-rgb": "160, 120, 220",
+                "--badge-green-rgb": "80, 190, 120",
+                "--badge-teal-rgb": "0, 188, 212",
+                "--btn-accent": "#e8c97a"
+            },
+            "purple": {
+                "--gold": "#a855f7",
+                "--gold-light": "#e9d5ff",
+                "--gold-dim": "#6b21a8",
+                "--gold-border": "rgba(107, 33, 168, 0.45)",
+                "--gold-sep": "rgba(107, 33, 168, 0.28)",
+                "--gold-rgb": "168, 85, 247",
+                "--gold-dim-rgb": "107, 33, 168",
+                "--gold-light-rgb": "233, 213, 255",
+
+                "--text": "#c4b5fd",
+                "--text-section": "#a78bfa",
+                "--text-label": "rgba(233, 213, 255, 0.9)",
+                "--text-white": "#ffffff",
+                "--text-muted-1": "#cccccc",
+                "--text-muted-2": "#bbbbbb",
+                "--text-link": "#c084fc",
+                "--text-danger": "#f8a0a0",
+
+                "--bg-dark": "rgba(7, 3, 18, 0.92)",
+                "--bg-panel": "rgba(18, 8, 32, 0.82)",
+                "--bg-base-rgb": "7, 3, 18",
+                "--bg-base-alt-rgb": "10, 2, 18",
+                "--bg-darkest": "#0a0313",
+                "--bg-card-deep": "#120920",
+                "--bg-card": "#1c1428",
+                "--bg-card-border": "#3d2e5a",
+                "--bg-body": "#1a003a",
+
+                "--online": "#c084fc",
+                "--online-rgb": "192, 132, 252",
+                "--blue": "#b57bee",
+
+                "--cyan": "#d946ef",
+                "--cyan-dim": "#a21caf",
+                "--cyan-glow": "#c026d3",
+                "--cyan-rgb": "217, 70, 239",
+
+                "--danger-rgb": "200, 30, 30",
+
+                "--badge-cc-rgb": "147, 51, 234",
+                "--badge-gpl-rgb": "192, 132, 252",
+                "--badge-pd-rgb": "126, 34, 206",
+                "--badge-green-rgb": "134, 239, 172",
+                "--badge-teal-rgb": "168, 85, 247",
+                "--btn-accent": "#d946ef"
+            }
+        };
+
+        let goldRgb = "";
+        let goldLightRgb = "";
+
+        const DEFAULT_THEME = "gold";
+
+        function refreshThemeColors() {
+            const style = getComputedStyle(document.documentElement);
+            goldRgb = style.getPropertyValue("--gold-rgb").trim();
+            goldLightRgb = style.getPropertyValue("--gold-light-rgb").trim();
+        }
+
+        function applyTheme(themeName) {
+            var theme = THEMES[themeName]
+            if (theme == null)
+                theme = THEMES[DEFAULT_THEME] || Object.values(THEMES)[0];
+
+            for (const [key, value] of Object.entries(theme)) {
+                document.documentElement.style.setProperty(key, value);
+            }
+
+            document.cookie = `theme=${themeName}; max-age=31536000; path=/`;
+            refreshThemeColors();
+        }
+
+        function getCookieValue(name) {
+            const regex = new RegExp(`(^| )${name}=([^;]+)`)
+            const match = document.cookie.match(regex)
+            if (match) {
+                return match[2]
+            }
+            return null;
+        }
+
+        var savedTheme = getCookieValue("theme");
+
+        if (savedTheme == null) {
+            savedTheme = DEFAULT_THEME;
+        }
+
+        applyTheme(savedTheme);
+    </script
 </head>
 
 <body>
+    <audio autoplay muted loop src="[$ASSET:atlasaudio-piano-relaxing-510242.mp3$]" id="bg-audio"> </audio>
     <div class="client">
 
         <div class="top_bar">
-            <div class="logo">Temp</div>
+            <a class="settings-btn [$ACTIVE:/settings/$]" href="/settings/" data-fragment="[$FRAGMENT_ROUTE:/SETTINGS/$]" id="settings_btn">
+                <div class="settings-btn-icon">⚙</div>
+                <div class="settings-btn-label">Settings</div>
+            </a>
 
             <nav>
                 <a class="[$ACTIVE:/$]" href="/" data-fragment="[$FRAGMENT_ROUTE:/$]">Home</a>
@@ -30,7 +174,8 @@
                     data-fragment="[$FRAGMENT_ROUTE:/CREDITS/$]">Credits</a>
             </nav>
 
-            <script>
+            <script defer>
+                const settingsBtn = document.getElementById("settings_btn");
                 document.addEventListener('click', (e) => {
                     let target = e.target.closest('a');
                     if (!target) return;
@@ -41,85 +186,187 @@
                         .then(response => response.text())
                         .then(data => {
                             const nav = document.querySelector("nav");
-                            console.log(target);
                             let ass = document.querySelectorAll("nav a");
                             for (let i = 0; i < ass.length; ++i) {
                                 ass[i].attributes.class.value = "";
                             }
+                            settingsBtn.attributes.class.value = "settings-btn";
 
-                            if (nav.contains(target)) {
-                                target.attributes.class.value = "active";
+                            if (nav.contains(target) || target == settingsBtn) {
+                                target.attributes.class.value += " active";
                             }
 
                             let contentContainer = document.getElementById("content");
                             contentContainer.innerHTML = data;
                             history.pushState({}, "", target.href);
+
+                            contentContainer.querySelectorAll("script").forEach(oldScript => {
+                                const newScript = document.createElement("script");
+                                // Copy attributes (e.g. src, type, defer)
+                                oldScript.getAttributeNames().forEach(attr => {
+                                    newScript.setAttribute(attr, oldScript.getAttribute(attr));
+                                });
+                                newScript.textContent = oldScript.textContent;
+                                oldScript.replaceWith(newScript);
+                            });
                         })
+                });
+
+
+                function setVolume(volume) {
+                    const audio = document.getElementById("bg-audio");
+                    if (audio == null) return;
+                    if (volume > 1)
+                        volume = volume / 100;
+
+                    audio.volume = volume;
+                    document.cookie = `bg_music_volume=${volume}; max-age=31536000; path=/`;
+                    const volumeDisplay = document.getElementById("vol-display");
+
+                    if (volumeDisplay == null)
+                        return
+
+                    volumeDisplay.innerHTML = `${Math.floor(volume * 100)}%`;
+                }
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const musicBtn = document.getElementById("music-toggle");
+                    const audio = document.getElementById("bg-audio");
+
+                    if (!musicBtn || !audio) return;
+
+                    const isMuted = document.cookie.includes("bg_music=muted");
+                    var defaultVolume = getCookieValue("bg_music_volume");
+                    if (defaultVolume == null) {
+                        defaultVolume == 0.1;
+                    }
+
+                    audio.volume = defaultVolume;
+
+                    function onFirstInteraction() {
+                        if (isMuted) {
+                            audio.muted = true;
+                        } else {
+                            audio.muted = false;
+                        }
+                    }
+
+                    document.addEventListener("click", onFirstInteraction, {once: true});
+                    document.addEventListener("keydown", onFirstInteraction, {once: true});
+
+                    musicBtn.classList.toggle("muted", isMuted);
+
+                    musicBtn.addEventListener("click", () => {
+                        if (audio.paused || audio.muted) {
+                            audio.muted = false;
+                            audio.play();
+                            musicBtn.classList.remove("muted");
+                            document.cookie = "bg_music=playing; max-age=31536000; path=/";
+                        } else {
+                            audio.pause();
+                            audio.muted = true;
+                            musicBtn.classList.add("muted");
+                            document.cookie = "bg_music=muted; max-age=31536000; path=/";
+                        }
+                    });
+                });
+
+                document.addEventListener("DOMContentLoaded", () => {
+                    const canvas = document.getElementById("particles");
+                    const ctx = canvas.getContext("2d");
+
+                    const particles = Array.from({length: 35}, () => ({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.25,
+                        vy: -(Math.random() * 0.3 + 0.1),
+                        size: Math.random() * 1.5 + 0.4,
+                        alpha: Math.random() * 0.4 + 0.1,
+                        gold: Math.random() > 0.5,
+                    }));
+
+                    function draw() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        for (const p of particles) {
+                            p.x += p.vx;
+                            p.y += p.vy;
+                            if (p.y < -5) {p.y = canvas.height + 5; p.x = Math.random() * canvas.width;}
+                            if (p.x < -5) p.x = canvas.width + 5;
+                            if (p.x > canvas.width + 5) p.x = -5;
+
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                            ctx.fillStyle = p.gold
+                                ? `rgba(${goldRgb}, ${p.alpha})`
+                                : `rgba(${goldLightRgb}, ${p.alpha * 0.6})`;
+                            ctx.fill();
+                        }
+                        requestAnimationFrame(draw);
+                    }
+                    draw();
                 });
             </script>
 
-            <div class="top_right">
-                <div class="name_info">
-                    <div class="username">Steinebeisser</div>
-                    <div class="status">● Cur</div>
-                </div>
-                <a class="avatar-button" href="/profile/" data-fragment="[$FRAGMENT_ROUTE:/profile/$]">
-                    <div class="avatar"></div>
-                </a>
-            </div>
+    <div class="top_right">
+        <div class="name_info">
+            <div class="username">Steinebeisser</div>
+            <div class="status">● Cur</div>
         </div>
+        <a class="avatar-button" href="/profile/" data-fragment="[$FRAGMENT_ROUTE:/profile/$]">
+            <div class="avatar"></div>
+        </a>
+    </div>
+    </div>
 
-        <div class="big_container">
-            <div class="left_content" id="content">
+    <div class="big_container">
+        <div class="left_content">
+            <canvas id="particles"></canvas>
+            <button id="music-toggle" class="content-music-btn">♪</button>
+            <div class="page_content" id="content">
                 [$PAGE_CONTENT$]
             </div>
-
-            <div class="stats_panel">
-                <div class="stats_header">
-                    <span class="connection_status">Connected</span>
-                </div>
-
-                <div class="stats_body">
-                    <div class="uptime">
-                        <span>Uptime</span>
-                        <strong>23d 14h</strong>
-                    </div>
-
-                    <div class="stat_section">
-                        <div class="section_title">Host</div>
-                        <div class="stat_row"><span>Provider</span><b>Infomaniak</b></div>
-                        <div class="stat_row"><span>Region</span><b>Plan-les-Ouates</b></div>
-                        <div class="stat_row"><span>Arch</span><b>x86_64</b></div>
-                        <div class="stat_row"><span>OS</span><b>Debian 13</b></div>
-                        <div class="stat_row"><span>Tier</span><b>VPS Lite</b></div>
-                    </div>
-
-                    <div class="stat_section">
-                        <div class="section_title">Hardware</div>
-                        <div class="stat_row"><span>CPU</span><b>AMD EPYC-Genoa</b></div>
-                        <div class="stat_row"><span>Cores</span><b>1 vCPU</b></div>
-                        <div class="stat_row"><span>RAM</span><b>1.2 / 2 GB</b></div>
-                        <div class="stat_row"><span>L1d</span><b>32 KiB</b></div>
-                        <div class="stat_row"><span>L2</span><b>1 MiB</b></div>
-                        <div class="stat_row"><span>L3</span><b>32 MiB</b></div>
-                    </div>
-
-                    <div class="stat_section">
-                        <div class="section_title">Traffic</div>
-                        <div class="stat_row"><span>Total</span><b>12,482</b></div>
-                        <div class="stat_row"><span>Unique</span><b>1,936</b></div>
-                        <div class="stat_row"><span>Today</span><b>43</b></div>
-                    </div>
-                </div>
-
-                <div class="stats_footer">
-                    <span class="stats_version">v0.1.0-alpha</span>
-                    <span class="stats_build">build 20250515</span>
-                </div>
-            </div>
         </div>
 
+        <div class="stats_panel">
+            <div class="stats_header">
+                <span class="connection_status">Connected</span>
+            </div>
+
+            <div class="stats_body">
+                <div class="uptime">
+                    <span>Uptime</span>
+                    <strong>23d 14h</strong>
+                </div>
+
+                <div class="stat_section">
+                    <div class="section_title">Host</div>
+                    <div class="stat_row"><span>Provider</span><b>Infomaniak</b></div>
+                    <div class="stat_row"><span>Region</span><b>Plan-les-Ouates</b></div>
+                    <div class="stat_row"><span>Arch</span><b>x86_64</b></div>
+                    <div class="stat_row"><span>OS</span><b>Debian 13</b></div>
+                    <div class="stat_row"><span>Tier</span><b>VPS Lite</b></div>
+                </div>
+
+                <div class="stat_section">
+                    <div class="section_title">Hardware</div>
+                    <div class="stat_row"><span>CPU</span><b>AMD EPYC-Genoa</b></div>
+                    <div class="stat_row"><span>Cores</span><b>1 vCPU</b></div>
+                    <div class="stat_row"><span>RAM</span><b>2 GB</b></div>
+                    <div class="stat_row"><span>L1d</span><b>32 KiB</b></div>
+                    <div class="stat_row"><span>L2</span><b>1 MiB</b></div>
+                    <div class="stat_row"><span>L3</span><b>32 MiB</b></div>
+                </div>
+
+            </div>
+
+            <div class="stats_footer">
+                <span class="stats_version">v0.1.0-alpha</span>
+                <span class="stats_build">build 20250515</span>
+            </div>
+        </div>
     </div>
-</body>
+
+    </div>
+    </body>
 
 </html>

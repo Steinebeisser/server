@@ -1,0 +1,55 @@
+---
+|route: /settings
+|pagetitle: Stein Settings
+---
+
+<div class="settings_page">
+
+    <div class="settings_section">
+        <div class="settings_section_title">Audio</div>
+        <div class="settings_section_content">
+            <div class="settings_row">
+                <label class="settings_label" for="vol-slider">Background Music Volume</label>
+                <div class="settings_control">
+                    <input type="range" id="vol-slider" class="vol_slider" min="0" max="100" value="10"
+                        oninput="setVolume(this.value)">
+                    <span class="vol_value" id="vol-display">10%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="settings_section">
+        <div class="settings_section_title">Color Scheme</div>
+        <div class="settings_section_content">
+            <div class="settings_row">
+                <label class="settings_label">Theme</label>
+                <div class="settings_control theme_buttons">
+                    <button class="theme_btn" data-theme="gold" id="btn-gold" onclick="applyTheme('gold')">
+                        <span class="theme_swatch" style="background:#c89b3c"></span>
+                        Gold
+                    </button>
+                    <button class="theme_btn" data-theme="purple" id="btn-purple" onclick="applyTheme('purple')">
+                        <span class="theme_swatch" style="background:#a855f7"></span>
+                        Purple
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    (function initSettings() {
+        const slider = document.getElementById("vol-slider");
+        const display = document.getElementById("vol-display");
+        var savedVolume = getCookieValue("bg_music_volume");
+        if (savedVolume !== null) {
+            savedVolume = savedVolume * 100;
+            slider.value = savedVolume;
+            savedVolume = Math.floor(savedVolume);
+            display.textContent = savedVolume + "%";
+        }
+    })();
+</script>
