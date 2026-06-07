@@ -44,7 +44,7 @@
     (function initSettings() {
         const slider = document.getElementById("vol-slider");
         const display = document.getElementById("vol-display");
-        var savedVolume = getCookieValue("bg_music_volume");
+        var savedVolume = localStorage.getItem("bg_music_volume");
         if (savedVolume !== null) {
             savedVolume = savedVolume * 100;
             slider.value = savedVolume;

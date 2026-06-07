@@ -130,20 +130,11 @@
                 document.documentElement.style.setProperty(key, value);
             }
 
-            document.cookie = `theme=${themeName}; max-age=31536000; path=/`;
+            localStorage.setItem("theme", themeName);
             refreshThemeColors();
         }
 
-        function getCookieValue(name) {
-            const regex = new RegExp(`(^| )${name}=([^;]+)`)
-            const match = document.cookie.match(regex)
-            if (match) {
-                return match[2]
-            }
-            return null;
-        }
-
-        var savedTheme = getCookieValue("theme");
+        var savedTheme = localStorage.getItem("theme");
 
         if (savedTheme == null) {
             savedTheme = DEFAULT_THEME;
@@ -220,7 +211,7 @@
                         volume = volume / 100;
 
                     audio.volume = volume;
-                    document.cookie = `bg_music_volume=${volume}; max-age=31536000; path=/`;
+                    localStorage.setItem("bg_music_volume", volume);
                     const volumeDisplay = document.getElementById("vol-display");
 
                     if (volumeDisplay == null)
@@ -235,8 +226,8 @@
 
                     if (!musicBtn || !audio) return;
 
-                    const isMuted = document.cookie.includes("bg_music=muted");
-                    var defaultVolume = getCookieValue("bg_music_volume");
+                    const isMuted = localStorage.getItem("bg_music") === "muted";
+                    var defaultVolume = localStorage.getItem("bg_music_volume");
                     if (defaultVolume == null) {
                         defaultVolume == 0.1;
                     }
@@ -261,12 +252,12 @@
                             audio.muted = false;
                             audio.play();
                             musicBtn.classList.remove("muted");
-                            document.cookie = "bg_music=playing; max-age=31536000; path=/";
+                            localStorage.setItem("bg_music", "playing");
                         } else {
                             audio.pause();
                             audio.muted = true;
                             musicBtn.classList.add("muted");
-                            document.cookie = "bg_music=muted; max-age=31536000; path=/";
+                            localStorage.setItem("bg_music", "muted");
                         }
                     });
                 });
