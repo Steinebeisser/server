@@ -38,6 +38,23 @@
         </div>
     </div>
 
+    <div class="settings_section">
+        <div class="settings_section_title">Background</div>
+        <div class="settings_section_content">
+            <div class="settings_row">
+                <label class="settings_label">Background Image</label>
+                <div class="settings_control bg_buttons">
+                    <button class="bg_btn" style="background-image: url('[$ASSET:battle-bunny-granite.webp$]')"
+                        onclick="applyBackground('[$ASSET:battle-bunny-granite.webp$]')">
+                    </button>
+                    <button class="bg_btn" style="background-image: url('[$ASSET:Riven_ValiantSwordSkin.jpg$]')"
+                        onclick="applyBackground('[$ASSET:Riven_ValiantSwordSkin.jpg$]')">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -50,6 +67,13 @@
             slider.value = savedVolume;
             savedVolume = Math.floor(savedVolume);
             display.textContent = savedVolume + "%";
+        }
+
+        const savedBg = localStorage.getItem("bg_image");
+        if (savedBg) {
+            document.querySelectorAll(".bg_btn").forEach(btn => {
+                btn.classList.toggle("active", btn.dataset.bg === savedBg);
+            });
         }
     })();
 </script>

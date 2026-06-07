@@ -134,6 +134,18 @@
             refreshThemeColors();
         }
 
+        function applyBackground(path) {
+            const client = document.querySelector(".client");
+            if (client) {
+                client.style.backgroundImage = `url("${path}")`;
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.querySelector(".client").style.backgroundImage = `url("${path}")`;
+                }, {once: true});
+            }
+            localStorage.setItem("bg_image", path);
+        }
+
         var savedTheme = localStorage.getItem("theme");
 
         if (savedTheme == null) {
@@ -141,6 +153,11 @@
         }
 
         applyTheme(savedTheme);
+        var savedBg = localStorage.getItem("bg_image");
+        if (savedBg) {
+            applyBackground(savedBg);
+        }
+
     </script
 </head>
 
