@@ -182,7 +182,20 @@
                     data-fragment="[$FRAGMENT_ROUTE:/CREDITS/$]">Credits</a>
             </nav>
 
-            <script defer>
+            <script>
+                function replaceContent(data) {
+                    let contentContainer = document.getElementById("content");
+                    contentContainer.innerHTML = data;
+
+                    contentContainer.querySelectorAll("script").forEach(oldScript => {
+                        const newScript = document.createElement("script");
+                        oldScript.getAttributeNames().forEach(attr => {
+                            newScript.setAttribute(attr, oldScript.getAttribute(attr));
+                        });
+                        newScript.textContent = oldScript.textContent;
+                        oldScript.replaceWith(newScript);
+                    });
+                }
                 const settingsBtn = document.getElementById("settings_btn");
                 document.addEventListener('click', (e) => {
                     let target = e.target.closest('a');
@@ -204,20 +217,34 @@
                                 target.attributes.class.value += " active";
                             }
 
-                            let contentContainer = document.getElementById("content");
-                            contentContainer.innerHTML = data;
                             history.pushState({}, "", target.href);
-
-                            contentContainer.querySelectorAll("script").forEach(oldScript => {
-                                const newScript = document.createElement("script");
-                                // Copy attributes (e.g. src, type, defer)
-                                oldScript.getAttributeNames().forEach(attr => {
-                                    newScript.setAttribute(attr, oldScript.getAttribute(attr));
-                                });
-                                newScript.textContent = oldScript.textContent;
-                                oldScript.replaceWith(newScript);
-                            });
+                            replaceContent(data);
                         })
+                });
+
+                window.addEventListener("popstate", (e) => {
+                    const fragAttr = `data-fragment`;
+
+                    const matchingLink = document.querySelector(`a[href="${location.pathname}"]`);
+                    const fragmentUrl = matchingLink
+                        ? matchingLink.origin + matchingLink.dataset.fragment
+                        : location.origin + location.pathname;
+
+                    fetch(fragmentUrl)
+                        .then(res => res.text())
+                        .then(data => {
+                            replaceContent(data);
+
+                            document.querySelectorAll("nav a").forEach(a => {
+                                a.classList.toggle("active", a.getAttribute("href") === location.pathname);
+                            });
+
+                            const settingsBtn = document.getElementById("settings_btn");
+                            settingsBtn.classList.toggle(
+                                "active",
+                                location.pathname.startsWith("/settings/")
+                            );
+                        });
                 });
 
 
